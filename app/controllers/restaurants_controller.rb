@@ -1,18 +1,22 @@
 class RestaurantsController < ApplicationController
+  before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
+
   def new
-    @article = Article.new
+    @restaurant = Restaurant.new
   end
 
   def create
-    @article = Article.new(article_params)
-    @article.save!
-
-    redirect_to article_path(@article)
+    @restaurant = Restaurant.new(restaurant_params)
+    if @restaurant.save
+      redirect_to restaurant_path(@restaurant)
+    else
+      render :new
+    end
   end
 
 
   def index
-    @articles = Article.all
+    @restaurants = Restaurant.all
   end
 
   def show
@@ -22,27 +26,27 @@ class RestaurantsController < ApplicationController
   end
 
   def update
-    @article.update(article_params)
+    @restaurant.update(restaurant_params)
 
-    redirect_to article_path(@article)
+    redirect_to restaurant_path(@restaurant)
   end
 
   def destroy
 
-    @article.destroy
+    @restaurant.destroy
 
-    redirect_to articles_path
+    redirect_to restaurants_path
   end
 
 
 
 
   private
-  def set_article
-    @article = Article.find(params[:id])
+  def set_restaurant
+    @restaurant = Restaurant.find(params[:id])
   end
 
-  def article_params
-    params.require(:article).permit(:title, :content)
+  def restaurant_params
+    params.require(:restaurant).permit(:name, :address, :phone_number, :category)
   end
 end
